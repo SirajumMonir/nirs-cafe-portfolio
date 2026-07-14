@@ -153,23 +153,25 @@ const HudPanel = ({ activeSection, onClose }) => {
                   Academic Chronicle
                 </h3>
                 <div className="space-y-2.5">
-                  {portfolioData.about.education.map((edu, i) => (
-                    <a
-                      key={i}
-                      href={edu.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block p-3 rounded bg-black/40 border border-slate-900 hover:border-[#39FF14]/40 hover:bg-black/60 transition-all group"
-                    >
-                      <div className="flex justify-between items-center mb-1">
-                        <span className="text-sm font-bold text-white font-cyber group-hover:text-[#39FF14] transition-colors">
-                          {edu.school}
-                        </span>
-                        <i className="fa-solid fa-arrow-up-right-from-square text-xs text-slate-500 group-hover:text-[#39FF14] transition-colors"></i>
+                  {portfolioData.about.education.map((edu, index) => {
+                    return (
+                      <div key={index} className="mb-4 p-3 bg-slate-800/40 rounded border border-slate-700/50 hover:border-cyan-500/30 transition-all duration-300">
+                        <a 
+                          href={
+                            edu.school.includes("Zilla") ? "https://kushtiazillaschool.edu.bd/" : 
+                            edu.school.includes("Central") ? "https://kgcckushtia.edu.bd/" : 
+                            "https://daffodilvarsity.edu.bd"
+                          }
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="text-cyan-400 hover:text-cyan-300 hover:underline transition-all duration-300 font-cyber cursor-pointer block font-bold text-lg mb-1"
+                        >
+                          {edu.school} <i className="fas fa-external-link-alt text-xs ml-1 opacity-70"></i>
+                        </a>
+                        <p className="text-slate-300 font-mono-tech text-sm">{edu.degree}</p>
                       </div>
-                      <span className="text-xs text-gray-400 block">{edu.degree}</span>
-                    </a>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
 
