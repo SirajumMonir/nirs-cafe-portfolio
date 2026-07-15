@@ -49,7 +49,7 @@ export const portfolioData = {
       description: "An advanced, interactive 3D WebGL portfolio inspired by creative gameplay HUDs, built using React, Three.js, Tailwind CSS, and GSAP. Features modular architecture, 360° space mapping, and highly responsive telemetry views.",
       tags: ["React", "Three.js", "Tailwind CSS", "GSAP", "Git Workflow"],
       github: "https://github.com/SirajumMonir/nirs-cafe-portfolio",
-      demo: "https://github.io" // Set as active live deployment
+      demo: "https://sirajum.me" // Set as active live deployment
     },
     {
       id: 2,
