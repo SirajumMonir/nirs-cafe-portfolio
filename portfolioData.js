@@ -13,8 +13,8 @@ export const portfolioData = {
     ]
   },
   home: {
-    welcomeMessage: "System Booted. Authenticated User: Sirajum Monir. Welcome to Nir's Cafe Outside Station.",
-    aboutShort: "I engineer deep neural architectures and state-of-the-art machine intelligence systems. My specialty lies in specialized visual comprehension, target LLM alignment/fine-tuning, and robust multi-agent swarms designed to handle real-world operations.",
+    welcomeMessage: "SYSTEM ACCESS GRANTED. Authenticated User: Sirajum Monir.",
+    shortBrief: "I am an AI/ML Engineer specializing in building production-ready deep learning pipelines, optimizing LLM architectures, and orchestrating autonomous multi-agent systems to solve complex real-world challenges.",
     pillars: [
       { title: "Python Elite", desc: "Expert scalable core architectures & PyTorch development.", color: "border-cyan-500/30 text-[#00F2FE]" },
       { title: "Machine Learning", desc: "Advanced regression, classification, and statistical optimization.", color: "border-indigo-500/30 text-indigo-400" },
@@ -45,43 +45,51 @@ export const portfolioData = {
   projects: [
     {
       id: 1,
-      title: "NeuralCafe Core - AI Agent Swarm Storefront",
-      description: "An autonomous agent network managing a simulated coffee supply chain. Agents trade raw ingredients, optimize roasting profiles using custom reinforcement learning models, and handle client support dynamically via structured LLMs.",
-      tags: ["LangChain", "FastAPI", "PyTorch", "Reinforcement Learning"],
-      github: "https://github.com/SirajumMonir",
-      demo: "https://github.com/SirajumMonir"
+      title: "Nir's Cafe - Immersive 3D AI/ML Portfolio",
+      description: "An advanced, interactive 3D WebGL portfolio inspired by creative gameplay HUDs, built using React, Three.js, Tailwind CSS, and GSAP. Features modular architecture, 360° space mapping, and highly responsive telemetry views.",
+      tags: ["React", "Three.js", "Tailwind CSS", "GSAP", "Git Workflow"],
+      github: "https://github.com/SirajumMonir/nirs-cafe-portfolio",
+      demo: "https://github.io" // Set as active live deployment
     },
     {
       id: 2,
-      title: "CyberSeg - Precision Drone Vision Segmentation",
-      description: "Real-time semantic segmentation engine running at 45 FPS on edge devices. Designed for autonomous robotic flight paths and obstacle detection using lightweight custom U-Net with TensorRT optimization.",
-      tags: ["Computer Vision", "TensorRT", "PyTorch", "U-Net"],
-      github: "https://github.com/SirajumMonir",
-      demo: "https://github.com/SirajumMonir"
+      title: "Jersey Wave - Full-Stack Sports Merch Marketplace",
+      description: "A comprehensive, high-throughput sports merchandise marketplace. Engineered from precise Figma UI/UX designs, styled natively with Tailwind CSS, and powered by a secure Supabase backend database layer with dynamic cart management.",
+      tags: ["Node.js", "React.js", "Tailwind CSS", "Supabase DB", "Figma UI/UX"],
+      github: "https://github.com/SirajumMonir/Jersey-wave-website-fullstack",
+      demo: "https://www.jerseywave.online/" // Active Live URL
     },
     {
       id: 3,
-      title: "LLM-Pulse - Quantized Llama-3 Fine-Tuning Hub",
-      description: "A centralized framework to fine-tune Llama-3-8B utilizing QLoRA adapters on domain-specific datasets. Includes customized evaluation dashboards measuring token latency, perplexity drops, and inference memory bounds.",
-      tags: ["Hugging Face", "QLoRA", "Model Optimization", "Python"],
-      github: "https://github.com/SirajumMonir",
-      demo: "https://github.com/SirajumMonir"
+      title: "LinkedIn AI Agent Core",
+      description: "An intelligent autonomous agent architecture designed to interface natively with the LinkedIn graph, automatically processing incoming network data, evaluating professional leads, and queuing targeted automated outreach.",
+      tags: ["Python", "AI Agents", "LLM Integration", "Automation Pipelines"],
+      github: "https://github.com/SirajumMonir/linkedin-ai-agent-",
+      demo: null
     },
     {
       id: 4,
-      title: "Synthetix - Generative Adversarial Face Mask Synthesizer",
-      description: "An advanced GAN designed to generate photorealistic medical and cyberpunk facial equipment masks on 2D head portraits, resolving training dataset shortages for custom retail visual models.",
-      tags: ["GANs", "TensorFlow", "CUDA", "Image Synthesis"],
-      github: "https://github.com/SirajumMonir",
-      demo: "https://github.com/SirajumMonir"
+      title: "TeleSearch AI - Telegram Swarm Bot with SERP Sync",
+      description: "A highly responsive Telegram multi-agent chatbot featuring real-time websearch integration via SERP API and automated data extraction syncing instantly into Google Sheets database layers.",
+      tags: ["Python", "Telegram API", "SERP WebSearch", "Google Sheets API"],
+      github: "https://github.com/SirajumMonir/AI-Agent-chatbot-telegram-websearch-serp-googlesheet",
+      demo: null
+    },
+    {
+      id: 5,
+      title: "NeuroExtract - Deep Learning Resume Semantic Parser",
+      description: "An advanced automated parsing framework engineered to extract unstructured resume files, clean text fields via optimized regex patterns, and isolate critical talent matrix variables.",
+      tags: ["Python", "Resume Parsing", "NLP Data Extraction", "Text Processing"],
+      github: "https://github.com/SirajumMonir/AI-Resume-Extractor",
+      demo: null
     }
   ],
   contact: {
     links: [
-      { name: "Facebook", icon: "fa-brands fa-facebook", url: "https://www.facebook.com/S.Monir.Nir/", color: "hover:text-blue-500 hover:border-blue-500/50" },
-      { name: "Instagram", icon: "fa-brands fa-instagram", url: "https://www.instagram.com/S.Monir.Nir/", color: "hover:text-pink-500 hover:border-pink-500/50" },
-      { name: "GitHub", icon: "fa-brands fa-github", url: "https://github.com/SirajumMonir", color: "hover:text-purple-400 hover:border-purple-400/50" },
-      { name: "LinkedIn", icon: "fa-brands fa-linkedin-in", url: "https://linkedin.com", color: "hover:text-cyan-400 hover:border-cyan-400/50" }
+      { platform: "Facebook", icon: "fab fa-facebook-f", url: "https://www.facebook.com/sirajum.monir.18.Nir" },
+      { platform: "Instagram", icon: "fab fa-instagram", url: "https://www.instagram.com/mr_pereshan/" },
+      { platform: "LinkedIn", icon: "fab fa-linkedin-in", url: "https://www.linkedin.com/in/md-sirajum-monir-emon/" },
+      { platform: "GitHub", icon: "fab fa-github", url: "https://github.com/SirajumMonir" }
     ],
     arcadeMessage: "Insert Coin to Establish a Real-time Connection. Sirajum Monir's server is ready for deployment contracts or project inquiries.",
     terminalIp: "192.168.42.109"

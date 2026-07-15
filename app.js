@@ -83,8 +83,15 @@ const BootSequence = ({ onComplete }) => {
   );
 };
 
-const HudPanel = ({ activeSection, onClose }) => {
+const HudPanel = ({ activeSection, onClose, isTransmitted, setIsTransmitted }) => {
   if (!activeSection || activeSection === 'default') return null;
+
+  const handleContactSubmit = (e) => {
+    e.preventDefault();
+    setIsTransmitted(true);
+    // Auto-reset back to a clean form after 4 seconds to allow re-entry
+    setTimeout(() => setIsTransmitted(false), 4000);
+  };
 
   const renderContent = () => {
     switch (activeSection) {
@@ -103,7 +110,7 @@ const HudPanel = ({ activeSection, onClose }) => {
                 {portfolioData.home.welcomeMessage}
               </p>
               <p className="text-gray-300 text-sm mb-6 leading-relaxed">
-                {portfolioData.home.aboutShort}
+                {portfolioData.home.shortBrief}
               </p>
 
               <h3 className="text-xs font-bold text-amber-400 font-cyber tracking-widest mb-3 uppercase">
@@ -240,49 +247,67 @@ const HudPanel = ({ activeSection, onClose }) => {
             </div>
 
             <div className="overflow-y-auto custom-scroll pr-2 space-y-4 max-h-[380px] sm:max-h-[440px]">
-              {portfolioData.projects.map((project) => (
-                <div
-                  key={project.id}
-                  className="p-4 rounded bg-black/40 border border-slate-900 hover:border-[#00F2FE]/30 transition-all hover:bg-black/60 relative group"
-                >
-                  <div className="absolute top-3 right-3 text-xs font-mono-tech text-[#00F2FE]/40">
-                    MODULE_0{project.id}
-                  </div>
-                  <h3 className="text-base font-bold text-white font-cyber mb-1 group-hover:text-cyan-300 transition-colors">
-                    {project.title}
-                  </h3>
-                  <p className="text-xs text-gray-400 mb-3 leading-relaxed">
-                    {project.description}
-                  </p>
+              {portfolioData.projects.map((project) => {
+                return (
+                  <div key={project.id} className="mb-4 p-4 bg-slate-800/40 rounded border border-slate-700/50 hover:border-cyan-500/30 transition-all duration-300">
+                    <h3 className="text-xl font-cyber text-cyan-400 font-bold mb-1">{project.title}</h3>
+                    <p className="text-slate-300 font-mono-tech text-sm mb-3 leading-relaxed">{project.description}</p>
+                    
+                    <div className="flex flex-wrap gap-1.5 mb-3">
+                      {project.tags.map((tag, tIdx) => (
+                        <span key={tIdx} className="px-2 py-0.5 bg-black rounded text-[11px] font-mono-tech text-amber-400 border border-amber-500/10">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
 
-                  <div className="flex flex-wrap gap-1.5 mb-3">
-                    {project.tags.map((tag, tIndex) => (
-                      <span key={tIndex} className="px-2 py-0.5 bg-black rounded text-[10px] font-mono-tech text-amber-400 border border-amber-500/10">
-                        {tag}
-                      </span>
-                    ))}
+                    <div className="flex space-x-2">
+                      <a 
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-100 text-[13px] font-mono-tech uppercase tracking-wider text-center rounded border border-slate-600/30 transition-all duration-200"
+                      >
+                        [ SOURCE CODE ]
+                      </a>
+                      
+                      {project.demo ? (
+                        <a 
+                          href={project.demo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 py-1.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-[13px] font-mono-tech uppercase tracking-wider text-center rounded border border-cyan-400/30 transition-all duration-300 shadow-[0_0_10px_rgba(6,182,212,0.15)]"
+                        >
+                          [ LAUNCH DEMO ]
+                        </a>
+                      ) : (
+                        <div className="flex-1 py-1.5 bg-slate-900/40 text-slate-600 text-[13px] font-mono-tech uppercase tracking-wider text-center rounded border border-slate-800 select-none opacity-50 cursor-not-allowed">
+                          [ LOCAL REPO ONLY ]
+                        </div>
+                      )}
+                    </div>
                   </div>
+                );
+              })}
 
-                  <div className="flex space-x-2">
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 py-1.5 bg-black hover:bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE] text-[10px] font-mono-tech uppercase tracking-wider text-center rounded transition-all"
-                    >
-                      [ CODE ]
-                    </a>
-                    <a
-                      href={project.demo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 py-1.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white text-[10px] font-mono-tech uppercase tracking-wider text-center rounded transition-all shadow-md shadow-cyan-500/5"
-                    >
-                      [ LAUNCH ]
-                    </a>
-                  </div>
+              {/* FUTURE PROJECT HINT CARD */}
+              <div className="p-4 bg-slate-900/60 rounded border-2 border-dashed border-amber-500/20 shadow-[inset_0_0_15px_rgba(245,158,11,0.03)] animate-pulse flex flex-col items-center justify-center text-center mt-6">
+                <div className="flex items-center space-x-2 mb-2">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                  </span>
+                  <h4 className="font-cyber text-amber-400 text-xs font-bold uppercase tracking-widest">
+                    TRANSMISSION LINK DETECTED
+                  </h4>
                 </div>
-              ))}
+                <p className="text-slate-300 font-mono-tech text-sm font-bold italic tracking-wide">
+                  "Something new is cooking..."
+                </p>
+                <p className="text-slate-400 font-mono-tech text-xs max-w-xs mt-1 leading-relaxed opacity-80">
+                  Advanced autonomous agent networks and neural LLM adapters are currently in development. Syncing database layers soon.
+                </p>
+              </div>
             </div>
 
             <div className="mt-4 pt-4 border-t border-slate-900 flex justify-between items-center">
@@ -301,9 +326,17 @@ const HudPanel = ({ activeSection, onClose }) => {
         return (
           <div className="w-full h-full flex flex-col justify-between">
             <div>
-              <div className="flex items-center space-x-2 text-[#FF007F] font-cyber text-sm tracking-widest mb-2">
-                <span className="w-2 h-2 rounded-full bg-[#FF007F] animate-pulse"></span>
-                <span>ESTABLISHING TERMINAL HANDSHAKE</span>
+              {/* REWRITTEN CONTACT HEADER BLOCK - FIXED CANCEL BUG */}
+              <div className="flex items-center justify-between border-b border-pink-500/20 pb-2 mb-4">
+                <div className="flex items-center space-x-2">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-pink-500"></span>
+                  </span>
+                  <h3 className="font-cyber text-pink-500 text-xs font-bold uppercase tracking-widest">
+                    [ UPLINK TERMINAL ONLINE ]
+                  </h3>
+                </div>
               </div>
               <h2 className="text-2xl font-extrabold text-white font-cyber tracking-wide border-b border-[#FF007F]/20 pb-3 mb-4">
                 ESTABLISH LINK
@@ -316,19 +349,21 @@ const HudPanel = ({ activeSection, onClose }) => {
                 <h3 className="text-xs font-bold text-[#FF007F] font-cyber tracking-widest uppercase mb-2">
                   Secure Channels
                 </h3>
-                <div className="grid grid-cols-2 gap-2">
-                  {portfolioData.contact.links.map((link, i) => (
-                    <a
-                      key={i}
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`flex items-center space-x-2.5 p-2.5 rounded bg-black/40 border border-slate-900 transition-all ${link.color} group`}
-                    >
-                      <i className={`${link.icon} text-base text-slate-400 group-hover:scale-110 transition-transform`}></i>
-                      <span className="text-xs font-bold text-white font-cyber">{link.name}</span>
-                    </a>
-                  ))}
+                <div className="flex space-x-3 justify-center py-1">
+                  {portfolioData.contact.links.map((link, index) => {
+                    return (
+                      <a 
+                        key={index}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-12 h-12 rounded-full border border-slate-700/50 flex items-center justify-center text-slate-400 hover:text-cyan-400 hover:border-cyan-500/50 hover:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300 bg-slate-900/40 text-lg cursor-pointer"
+                        title={link.platform}
+                      >
+                        <i className={link.icon}></i>
+                      </a>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -336,31 +371,42 @@ const HudPanel = ({ activeSection, onClose }) => {
                 <h3 className="text-xs font-bold text-[#FF007F] font-cyber tracking-widest uppercase mb-2">
                   Send Instant Message
                 </h3>
-                <form onSubmit={(e) => { e.preventDefault(); }} className="space-y-2">
-                  <input
-                    type="email"
-                    placeholder="ENTER_SENDER_EMAIL@DOMAIN.COM"
-                    className="w-full bg-black border border-slate-900 focus:border-[#FF007F]/50 p-2.5 rounded text-xs font-mono-tech text-white placeholder-slate-600 outline-none transition-all"
-                  />
-                  <textarea
-                    rows="2"
-                    placeholder="ENTER_MESSAGE_BODY_STREAM..."
-                    className="w-full bg-black border border-slate-900 focus:border-[#FF007F]/50 p-2.5 rounded text-xs font-mono-tech text-white placeholder-slate-600 outline-none transition-all resize-none"
-                  ></textarea>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const indicator = document.getElementById('message-indicator');
-                      if (indicator) {
-                        indicator.innerText = "MESSAGE COMPILED & SENT SUCCESSFULLY";
-                        setTimeout(() => { indicator.innerText = ""; }, 4000);
-                      }
-                    }}
-                    className="w-full py-2 bg-gradient-to-r from-[#FF007F] to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-cyber text-xs font-bold uppercase tracking-widest rounded transition-all"
-                  >
-                    COMPILE & TRANSMIT
-                  </button>
-                  <p id="message-indicator" className="text-[10px] text-emerald-400 font-mono-tech text-center mt-1"></p>
+                <form onSubmit={handleContactSubmit} className="space-y-4">
+                  {isTransmitted ? (
+                    <div className="p-5 bg-green-950/20 rounded border border-green-500/30 text-center animate-pulse font-mono-tech mt-4">
+                      <div className="flex items-center justify-center space-x-2 text-green-400 mb-2 font-cyber font-bold text-sm tracking-widest">
+                        <span>✓ TRANSMISSION COMPLETED</span>
+                      </div>
+                      <p className="text-slate-300 text-xs leading-relaxed">
+                        Signal packed into compressed encryption arrays. Secure telemetry stream pushed to Nir's local subnet gateway successfully.
+                      </p>
+                      <div className="w-full mt-4 py-1 bg-green-900/30 text-green-400 text-[10px] font-cyber uppercase tracking-wider rounded border border-green-500/20">
+                        [ UPLINK TERMINATED CLEANLY ]
+                      </div>
+                    </div>
+                  ) : (
+                    <React.Fragment>
+                      <input
+                        type="email"
+                        name="email"
+                        placeholder="ENTER_SENDER_EMAIL@DOMAIN.COM"
+                        className="w-full bg-black border border-slate-900 focus:border-[#FF007F]/50 p-2.5 rounded text-xs font-mono-tech text-white placeholder-slate-600 outline-none transition-all"
+                      />
+                      <textarea
+                        rows="2"
+                        name="message"
+                        placeholder="ENTER_MESSAGE_BODY_STREAM..."
+                        className="w-full bg-black border border-slate-900 focus:border-[#FF007F]/50 p-2.5 rounded text-xs font-mono-tech text-white placeholder-slate-600 outline-none transition-all resize-none"
+                      ></textarea>
+                      <button
+                        type="submit"
+                        className="w-full py-2 bg-gradient-to-r from-[#FF007F] to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-cyber text-xs font-bold uppercase tracking-widest rounded transition-all"
+                      >
+                        COMPILE & TRANSMIT
+                      </button>
+                      <p id="message-indicator" className="text-[10px] text-emerald-400 font-mono-tech text-center mt-1"></p>
+                    </React.Fragment>
+                  )}
                 </form>
               </div>
             </div>
@@ -391,12 +437,14 @@ const HudPanel = ({ activeSection, onClose }) => {
         <div className={`absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 ${activeSection === 'home' ? 'border-[#00F2FE]' : activeSection === 'about' ? 'border-[#39FF14]' : activeSection === 'projects' ? 'border-[#00F2FE]' : 'border-[#FF007F]'}`}></div>
         <div className={`absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 ${activeSection === 'home' ? 'border-[#00F2FE]' : activeSection === 'about' ? 'border-[#39FF14]' : activeSection === 'projects' ? 'border-[#00F2FE]' : 'border-[#FF007F]'}`}></div>
 
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors"
-        >
-          <i className="fa-solid fa-xmark text-lg"></i>
-        </button>
+        {activeSection !== 'contact' && (
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors"
+          >
+            <i className="fa-solid fa-xmark text-lg"></i>
+          </button>
+        )}
 
         {renderContent()}
       </div>
@@ -408,6 +456,46 @@ const App = () => {
   const [isBooted, setIsBooted] = useState(false);
   const [activeSection, setActiveSection] = useState('default');
   const [hoveredSection, setHoveredSection] = useState(null);
+  const [isTransmitted, setIsTransmitted] = React.useState(false);
+
+  // Audio system states & methods
+  const [isMuted, setIsMuted] = React.useState(true);
+  const [volume, setVolume] = React.useState(0.3); // Ambient volume at 30% default
+  const audioRef = React.useRef(null);
+  const [showDetails, setShowDetails] = React.useState(false);
+
+  React.useEffect(() => {
+    audioRef.current = new Audio('./bg-music.mp3');
+    audioRef.current.loop = true;
+    audioRef.current.volume = volume;
+    
+    return () => {
+      if (audioRef.current) audioRef.current.pause();
+    };
+  }, []);
+
+  const toggleMusic = () => {
+    if (isMuted) {
+      audioRef.current.play().catch(err => console.log("Audio play blocked:", err));
+    } else {
+      audioRef.current.pause();
+    }
+    setIsMuted(!isMuted);
+  };
+
+  const handleVolumeChange = (e) => {
+    const newVolume = parseFloat(e.target.value);
+    setVolume(newVolume);
+    if (audioRef.current) {
+      audioRef.current.volume = newVolume;
+      if (newVolume > 0 && isMuted) {
+        audioRef.current.play().catch(err => console.log(err));
+        setIsMuted(false);
+      } else if (newVolume === 0) {
+        setIsMuted(true);
+      }
+    }
+  };
 
   const canvasRef = useRef(null);
   const sceneRef = useRef(null);
@@ -1651,21 +1739,70 @@ const App = () => {
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block z-0" />
 
       {/* HTML Side Panel Module Overlay */}
-      <HudPanel activeSection={activeSection} onClose={handleClosePanel} />
+      <HudPanel activeSection={activeSection} onClose={handleClosePanel} isTransmitted={isTransmitted} setIsTransmitted={setIsTransmitted} />
 
       {/* Passive environmental interface elements */}
       {isBooted && (
         <div className="absolute top-4 left-4 z-10 pointer-events-none p-4 glass-morphic rounded crt-overlay hidden sm:block">
-          <h1 className="text-xl font-bold font-cyber text-[#00F2FE] tracking-wide mb-1 flex items-center space-x-2">
-            <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse inline-block"></span>
-            <span>{portfolioData.engineer.cafeName.toUpperCase()}</span>
-          </h1>
-          <p className="text-[10px] text-slate-400 font-mono-tech mb-2">OPERATOR: {portfolioData.engineer.name.toUpperCase()}</p>
-          <div className="text-[11px] text-gray-300 font-mono-tech space-y-1">
-            <p>STATUS: ONLINE</p>
-            <p>REGION: {portfolioData.engineer.location.toUpperCase()}</p>
-            <p>INTERACT: CLICK CORES OR STREET SIGNS</p>
-          </div>
+          <h2 onClick={() => setShowDetails(!showDetails)} className="text-xl font-cyber text-cyan-400 font-bold tracking-wider cursor-pointer hover:text-cyan-300 transition-colors flex items-center justify-between select-none pointer-events-auto">
+            <span>• NIR'S CAFE</span>
+            <span className="text-[10px] text-slate-500 font-mono-tech">{showDetails ? "[ COLLAPSE - ]" : "[ EXPAND + ]"}</span>
+          </h2>
+
+          {showDetails && (
+            <div className="animate-fadeIn mt-2">
+              <p className="text-[10px] text-slate-400 font-mono-tech mb-2">OPERATOR: {portfolioData.engineer.name.toUpperCase()}</p>
+              <div className="text-[11px] text-gray-300 font-mono-tech space-y-1">
+                <p>STATUS: ONLINE</p>
+                <p>REGION: {portfolioData.engineer.location.toUpperCase()}</p>
+                <p>INTERACT: CLICK CORES OR STREET SIGNS</p>
+              </div>
+
+              <div className="flex flex-col space-y-2 mt-3 border-t border-cyan-500/20 pt-3 max-w-xs font-cyber pointer-events-auto">
+                <div className="flex items-center justify-between space-x-3">
+                  {/* Dynamic ON/OFF Toggle Button */}
+                  <button 
+                    onClick={toggleMusic}
+                    className={`px-3 py-1 text-xs rounded border transition-all duration-300 flex items-center space-x-1.5 flex-1 justify-center ${
+                      isMuted 
+                      ? 'border-slate-700/50 bg-slate-900/40 text-slate-400 hover:text-cyan-400 hover:border-cyan-500/30' 
+                      : 'border-cyan-500/30 bg-cyan-950/20 text-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.15)] animate-pulse'
+                    }`}
+                  >
+                    <i className={`fas ${isMuted ? 'fa-volume-mute' : 'fa-volume-up'}`}></i>
+                    <span>{isMuted ? 'AUDIO: OFF' : 'AUDIO: ON'}</span>
+                  </button>
+                  
+                  {/* Numeric Percentage Readout Badge */}
+                  <span className="text-[10px] font-mono-tech text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded bg-black/40">
+                    VOL: {Math.round(volume * 100)}%
+                  </span>
+                </div>
+
+                {/* Cyberpunk Neon Volume Range Slider */}
+                <div className="flex items-center space-x-2">
+                  <i className="fas fa-minus text-[10px] text-slate-500"></i>
+                  <input 
+                    type="range" 
+                    min="0" 
+                    max="1" 
+                    step="0.05" 
+                    value={isMuted ? 0 : volume} 
+                    onChange={handleVolumeChange}
+                    className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-400 focus:outline-none transition-all duration-200"
+                    style={{
+                      background: `linear-gradient(to right, #22d3ee 0%, #22d3ee ${volume * 100}%, #1e293b ${volume * 100}%, #1e293b 100%)`
+                    }}
+                  />
+                  <i className="fas fa-plus text-[10px] text-cyan-400"></i>
+                </div>
+              </div>
+
+              <p className="text-slate-300 font-mono-tech text-xs md:text-sm mt-3 border-t border-cyan-500/20 pt-2 leading-relaxed opacity-90 max-w-xs">
+                {portfolioData.home.shortBrief}
+              </p>
+            </div>
+          )}
         </div>
       )}
 
